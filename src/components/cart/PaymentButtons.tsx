@@ -90,7 +90,15 @@ const PaymentButtons = ({
   return (
     <>
       <AnimatePresence>
-        {isLoading && <PaymentLoadingScreen />}
+        {isLoading && (
+          <PaymentLoadingScreen 
+            cartItems={cartItems}
+            userDetails={userDetails}
+            total={total}
+            shipping={shipping}
+            finalTotal={finalTotal}
+          />
+        )}
       </AnimatePresence>
 
       <div className="space-y-3">
