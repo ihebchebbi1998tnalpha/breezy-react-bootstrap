@@ -36,16 +36,13 @@ const PaymentButtons = ({
       return;
     }
 
-    try {
-      setIsLoading(true);
-      console.log('Starting Konnect payment process...');
+    setIsLoading(true);
 
-      // Show loading screen for at least 2 seconds for better UX
-      await new Promise(resolve => setTimeout(resolve, 2000));
+    try {
+      // Add a 6-second delay
+      await new Promise(resolve => setTimeout(resolve, 6000));
 
       const orderId = `ORDER-${Date.now()}`;
-      console.log('Initializing payment with orderId:', orderId);
-
       const response = await initKonnectPayment({
         amount: finalTotal,
         firstName: userDetails.firstName,
@@ -54,16 +51,15 @@ const PaymentButtons = ({
         orderId,
       });
 
-      console.log('Payment initialized successfully, redirecting to:', response.payUrl);
       window.location.href = response.payUrl;
     } catch (error) {
-      console.error('Payment initialization error:', error);
-      setIsLoading(false);
+      console.error('Payment error:', error);
       toast({
         title: "Erreur de paiement",
         description: "Échec de l'initialisation du paiement. Veuillez réessayer.",
         variant: "destructive",
       });
+      setIsLoading(false);
     }
   };
 
@@ -94,15 +90,7 @@ const PaymentButtons = ({
   return (
     <>
       <AnimatePresence>
-        {isLoading && (
-          <PaymentLoadingScreen 
-            cartItems={cartItems}
-            userDetails={userDetails}
-            total={total}
-            shipping={shipping}
-            finalTotal={finalTotal}
-          />
-        )}
+        {isLoading && <PaymentLoadingScreen />}
       </AnimatePresence>
 
       <div className="space-y-3">
@@ -115,7 +103,7 @@ const PaymentButtons = ({
           className="w-full bg-[#700100] text-white px-4 py-3 rounded-md hover:bg-[#591C1C] transition-all duration-300 flex items-center justify-center gap-2 disabled:cursor-not-allowed"
         >
           <CreditCard size={20} />
-          {isLoading ? 'Préparation du paiement...' : `Payer avec Konnekt (${finalTotal.toFixed(2)} TND)`}
+          Payer avec Konnekt ({finalTotal.toFixed(2)} TND)
         </motion.button>
         <motion.button
           initial={{ opacity: 0.5 }}
