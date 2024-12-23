@@ -10,6 +10,7 @@ import ColorSelector from './product-detail/ColorSelector';
 import SizeSelector from './product-detail/SizeSelector';
 import QuantitySelector from './product-detail/QuantitySelector';
 import PersonalizationButton from './product-detail/PersonalizationButton';
+import { getPersonalizations } from '@/utils/personalizationStorage';
 
 interface ProductDetailModalProps {
   isOpen: boolean;
@@ -30,7 +31,10 @@ const ProductDetailModal = ({ isOpen, onClose, product }: ProductDetailModalProp
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState('');
   const [isWishlisted, setIsWishlisted] = useState(false);
-  const [personalization, setPersonalization] = useState('');
+  const [personalization, setPersonalization] = useState(() => {
+    const savedPersonalizations = getPersonalizations();
+    return savedPersonalizations[product.id] || '';
+  });
   const { addToCart } = useCart();
   const { toast } = useToast();
 
@@ -145,6 +149,7 @@ const ProductDetailModal = ({ isOpen, onClose, product }: ProductDetailModalProp
               <PersonalizationButton
                 productId={product.id}
                 onSave={setPersonalization}
+                initialText={personalization}
               />
 
               <div className="space-y-3">

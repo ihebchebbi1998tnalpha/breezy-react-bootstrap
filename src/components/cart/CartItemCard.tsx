@@ -1,7 +1,8 @@
 import React from 'react';
-import { MinusCircle, PlusCircle, Trash2, Tag } from 'lucide-react';
+import { MinusCircle, PlusCircle, Trash2, Tag, Edit2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { CartItem } from './CartProvider';
+import PersonalizationInput from './PersonalizationInput';
 
 interface CartItemCardProps {
   item: CartItem;
@@ -45,16 +46,12 @@ const CartItemCard = ({ item, onUpdateQuantity, onRemove }: CartItemCardProps) =
             </div>
           )}
 
-          {item.personalization && (
-            <div className="mb-3 bg-[#F1F0FB] p-2 rounded-md">
-              <p className="text-sm text-gray-600 flex items-center gap-1">
-                <Tag className="h-4 w-4 text-[#700100]" />
-                Personnalisation: {item.personalization}
-              </p>
-            </div>
-          )}
+          <PersonalizationInput
+            itemId={item.id}
+            onUpdate={() => {}}
+          />
 
-          <div className="flex items-center gap-4 bg-[#F1F0FB] rounded-full px-4 py-1 w-fit">
+          <div className="flex items-center gap-4 bg-[#F1F0FB] rounded-full px-4 py-1 w-fit mt-3">
             <button
               onClick={() => onUpdateQuantity(item.id, item.quantity - 1)}
               className="text-[#8E9196] hover:text-[#700100] transition-colors"

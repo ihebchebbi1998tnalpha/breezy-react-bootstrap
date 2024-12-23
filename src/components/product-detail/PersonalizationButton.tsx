@@ -9,14 +9,12 @@ import { savePersonalization, getPersonalizations } from '@/utils/personalizatio
 interface PersonalizationButtonProps {
   productId: number;
   onSave: (text: string) => void;
+  initialText?: string;
 }
 
-const PersonalizationButton = ({ productId, onSave }: PersonalizationButtonProps) => {
+const PersonalizationButton = ({ productId, onSave, initialText = '' }: PersonalizationButtonProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [text, setText] = useState(() => {
-    const personalizations = getPersonalizations();
-    return personalizations[productId] || '';
-  });
+  const [text, setText] = useState(initialText);
 
   const handleSave = () => {
     if (text.trim()) {
@@ -37,7 +35,7 @@ const PersonalizationButton = ({ productId, onSave }: PersonalizationButtonProps
           className="w-full bg-white text-[#700100] border-2 border-[#700100] hover:bg-[#700100] hover:text-white transition-all duration-300"
         >
           <Text className="mr-2 h-5 w-5" />
-          Personnaliser votre produit
+          {text ? 'Modifier la personnalisation' : 'Personnaliser votre produit'}
         </Button>
       </motion.div>
 
